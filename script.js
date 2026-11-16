@@ -122,12 +122,15 @@ function filterJurusan() {
         kotak.style.display = namaJurusan.indexOf(kataKunci) !== -1 ? "flex" : "none";
     }
 }
-
 function cekMapel() {
     const terpilih = document.querySelector('input[name="jurusanRadio"]:checked');
     const container = document.getElementById("hasilMapel");
     if (!terpilih || !container) return;
-    const data = dataJurusan[terpilih.value];
+
+    const kunci = terpilih.value;
+    const data = dataJurusan[kunci];
+    if (!data) return;
+
     container.innerHTML = "";
 
     const judul = document.createElement("h3");
@@ -160,8 +163,10 @@ function cekMapel() {
     blokTips.className = "strategy-box";
     const boldStrategi = document.createElement("strong");
     boldStrategi.textContent = "Strategi: ";
+    const spanTips = document.createElement("span");
+    spanTips.textContent = data.tips;
     blokTips.appendChild(boldStrategi);
-    blokTips.appendChild(document.createTextNode(data.tips));
+    blokTips.appendChild(spanTips);
 
     container.appendChild(judul);
     container.appendChild(blokWajib);
@@ -238,10 +243,6 @@ function updateGrafik() {
         const judulStatus = document.createElement("strong");
         const teksStatus = document.createElement("span");
 
-        if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
-            statusEl.className = "status-banner status-warn";
-            judulStatus.textContent = "Data Belum Lengkap: ";
-            teksStatus.textContent = "Silakan isi seluruh nilai semester 1 sampai 5 dengan nilai asli (lebih dari 0) untuk melihat analisis tren SNBP yang akurat.";
         if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Data Belum Lengkap: ";
