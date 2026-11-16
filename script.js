@@ -5,11 +5,29 @@ const dataJurusan = {
         saran: ["Matematika Tingkat Lanjut", "Fisika", "Bahasa Inggris Tingkat Lanjut"],
         tips: "Pastikan nilai Biologi dan Kimia selalu di atas 88 dan mengalami kenaikan tiap semester."
     },
+    farmasi: {
+        nama: "Farmasi",
+        wajib: ["Biologi", "Kimia"],
+        saran: ["Matematika Tingkat Lanjut", "Fisika", "Bahasa Inggris Tingkat Lanjut"],
+        tips: "Kimia adalah fondasi utama di Farmasi. Perkuat pemahaman kimia organik dan perhitungan dosis."
+    },
     informatika: {
         nama: "Teknik Informatika / Ilmu Komputer",
         wajib: ["Matematika Tingkat Lanjut"],
         saran: ["Fisika", "Informatika", "Bahasa Inggris Tingkat Lanjut"],
         tips: "Kombinasi Matematika Tingkat Lanjut dan Informatika sangat memperkuat portofolio akademik."
+    },
+    industri: {
+        nama: "Teknik Industri",
+        wajib: ["Matematika Tingkat Lanjut", "Fisika"],
+        saran: ["Ekonomi", "Kimia", "Informatika"],
+        tips: "Teknik Industri memadukan rekayasa dan manajemen, sehingga mengambil Ekonomi sebagai pelengkap sangat disarankan."
+    },
+    sipil: {
+        nama: "Teknik Sipil / Arsitektur",
+        wajib: ["Fisika", "Matematika Tingkat Lanjut"],
+        saran: ["Kimia", "Seni Rupa (khusus Arsitektur)", "Informatika"],
+        tips: "Untuk Arsitektur, siapkan juga portofolio gambar bentuk dan desain bangunan."
     },
     manajemen: {
         nama: "Manajemen / Bisnis / Akuntansi",
@@ -29,13 +47,45 @@ const dataJurusan = {
         saran: ["Matematika Tingkat Lanjut", "Antropologi", "Bahasa Inggris Tingkat Lanjut"],
         tips: "Beberapa kampus memasukkan Psikologi ke rumpun Saintek (Biologi) dan sebagian Soshum (Sosiologi). Mengambil keduanya sangat aman."
     },
-    sipil: {
-        nama: "Teknik Sipil / Arsitektur",
-        wajib: ["Fisika", "Matematika Tingkat Lanjut"],
-        saran: ["Kimia", "Seni Rupa (khusus Arsitektur)", "Informatika"],
-        tips: "Untuk Arsitektur, siapkan juga portofolio gambar bentuk dan desain bangunan."
+    komunikasi: {
+        nama: "Ilmu Komunikasi",
+        wajib: ["Sosiologi"],
+        saran: ["Antropologi", "Bahasa Inggris Tingkat Lanjut", "Bahasa Indonesia Tingkat Lanjut", "Ekonomi"],
+        tips: "Aktif di kegiatan jurnalistik sekolah, OSIS, atau lomba debat dapat menambah nilai portofolio."
+    },
+    hi: {
+        nama: "Hubungan Internasional",
+        wajib: ["Sosiologi", "Bahasa Inggris Tingkat Lanjut"],
+        saran: ["Sejarah Tingkat Lanjut", "Geografi", "Ekonomi", "Bahasa Asing Lainnya"],
+        tips: "Kemampuan bahasa asing dan wawasan geopolitik global menjadi nilai tambah utama."
+    },
+    dkv: {
+        nama: "Desain Komunikasi Visual (DKV)",
+        wajib: ["Seni Budaya / Seni Rupa"],
+        saran: ["Informatika", "Sosiologi", "Bahasa Inggris Tingkat Lanjut", "Antropologi"],
+        tips: "Wajib menyiapkan portofolio karya seni dan desain sesuai ketentuan panitia SNBP."
+    },
+    pgsd: {
+        nama: "Pendidikan Guru Sekolah Dasar (PGSD)",
+        wajib: ["Sosiologi", "Pendidikan Pancasila (Mapel Wajib)"],
+        saran: ["Biologi", "Matematika Tingkat Lanjut", "Bahasa Indonesia Tingkat Lanjut"],
+        tips: "Guru SD mengajar lintas bidang, sehingga kestabilan nilai di semua mata pelajaran umum sangat diperhatikan."
     }
 };
+
+function filterJurusan() {
+    const kataKunci = document.getElementById("cariJurusan").value.toLowerCase();
+    const semuaKotak = document.querySelectorAll("#daftarJurusanGrid .option-box");
+
+    semuaKotak.forEach(kotak => {
+        const namaJurusan = kotak.getAttribute("data-nama");
+        if (namaJurusan.includes(kataKunci)) {
+            kotak.style.display = "flex";
+        } else {
+            kotak.style.display = "none";
+        }
+    });
+}
 
 function cekMapel() {
     const terpilih = document.querySelector('input[name="jurusanRadio"]:checked');
@@ -65,13 +115,21 @@ function cekMapel() {
 }
 
 function ambilNilaiInput() {
-    return [
-        parseFloat(document.getElementById('sem1').value) || 0,
-        parseFloat(document.getElementById('sem2').value) || 0,
-        parseFloat(document.getElementById('sem3').value) || 0,
-        parseFloat(document.getElementById('sem4').value) || 0,
-        parseFloat(document.getElementById('sem5').value) || 0
-    ];
+    const ids = ['sem1', 'sem2', 'sem3', 'sem4', 'sem5'];
+    return ids.map(id => {
+        const el = document.getElementById(id);
+        let angka = parseFloat(el.value);
+        if (isNaN(angka)) angka = 0;
+        if (angka > 100) {
+            angka = 100;
+            el.value = 100;
+        }
+        if (angka < 0) {
+            angka = 0;
+            el.value = 0;
+        }
+        return angka;
+    });
 }
 
 function gambarGrafikSVG(nilai) {
@@ -94,10 +152,9 @@ function gambarGrafikSVG(nilai) {
     const rentang = batasAtas - batasBawah || 1;
 
     const titik = nilai.map((val, idx) => {
-        const nilaiAman = Math.min(100, Math.max(0, val));
         const x = padKiri + (idx * (areaLebar / (nilai.length - 1)));
-        const y = padAtas + areaTinggi - (((nilaiAman - batasBawah) / rentang) * areaTinggi);
-        return { x, y, val: nilaiAman };
+        const y = padAtas + areaTinggi - (((val - batasBawah) / rentang) * areaTinggi);
+        return { x, y, val };
     });
 
     const jalurGaris = titik.map((t, i) => `${i === 0 ? 'M' : 'L'} ${t.x.toFixed(1)} ${t.y.toFixed(1)}`).join(' ');
@@ -149,22 +206,8 @@ function tampilkanStatusAnalisis(nilai) {
         }
     }
 
-    if (jumlahTurun === 0 && nilai[4] > nilai[0]) {
-        statusEl.className = "status-banner status-good";
-        statusEl.innerHTML = `<strong>Tren Sangat Bagus:</strong> Rata-rata keseluruhan <strong>${rataRata}</strong>. Grafik nilaimu konsisten naik dari semester 1 hingga 5, sangat ideal untuk penilaian SNBP.`;
-    } else if (nilai[4] >= nilai[0] && jumlahTurun <= 1) {
-        statusEl.className = "status-banner status-good";
-        statusEl.innerHTML = `<strong>Tren Cukup Stabil:</strong> Rata-rata keseluruhan <strong>${rataRata}</strong>. Sempat ada sedikit penurunan, tetapi grafik akhirmu berhasil pulih dan meningkat.`;
-    } else {
-        statusEl.className = "status-banner status-warn";
-        statusEl.innerHTML = `<strong>Perhatian:</strong> Rata-rata keseluruhan <strong>${rataRata}</strong>. Terdeteksi penurunan tren nilai pada beberapa semester. Fokus tingkatkan nilai mata pelajaran pendukung di semester berikutnya.`;
-    }
-}
+    const semAwal = nilai[0];
+    const semAkhir = nilai[nilai.length - 1];
 
-function updateGrafik() {
-    const nilai = ambilNilaiInput();
-    gambarGrafikSVG(nilai);
-    tampilkanStatusAnalisis(nilai);
-}
-
-document.addEventListener('DOMContentLoaded', updateGrafik);
+    if (jumlahTurun === 0 && semAkhir > semAwal) {
+        statusEl.className = "status-banner status-good";
