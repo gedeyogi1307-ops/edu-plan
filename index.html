@@ -110,24 +110,24 @@
                     <div class="grid-2 compact-grid">
                         <div>
                             <label class="field-label" for="sem1">Semester 1 (Kelas 10)</label>
-                            <input type="number" id="sem1" value="84" min="0" max="100" step="0.01" onchange="updateGrafik()">
+                            <input type="number" id="sem1" value="84" min="0" max="100" step="0.01" oninput="updateGrafik()">
                         </div>
                         <div>
                             <label class="field-label" for="sem2">Semester 2 (Kelas 10)</label>
-                            <input type="number" id="sem2" value="85" min="0" max="100" step="0.01" onchange="updateGrafik()">
+                            <input type="number" id="sem2" value="85" min="0" max="100" step="0.01" oninput="updateGrafik()">
                         </div>
                         <div>
                             <label class="field-label" for="sem3">Semester 3 (Kelas 11)</label>
-                            <input type="number" id="sem3" value="86" min="0" max="100" step="0.01" onchange="updateGrafik()">
+                            <input type="number" id="sem3" value="86" min="0" max="100" step="0.01" oninput="updateGrafik()">
                         </div>
                         <div>
                             <label class="field-label" for="sem4">Semester 4 (Kelas 11)</label>
-                            <input type="number" id="sem4" value="88" min="0" max="100" step="0.01" onchange="updateGrafik()">
+                            <input type="number" id="sem4" value="88" min="0" max="100" step="0.01" oninput="updateGrafik()">
                         </div>
                     </div>
                     <div>
                         <label class="field-label" for="sem5">Semester 5 (Kelas 12 - Target/Aktual)</label>
-                        <input type="number" id="sem5" value="90" min="0" max="100" step="0.01" onchange="updateGrafik()">
+                        <input type="number" id="sem5" value="90" min="0" max="100" step="0.01" oninput="updateGrafik()">
                     </div>
                     <button type="button" onclick="updateGrafik()" class="btn-solid">
                         Analisis Tren Nilai
@@ -137,42 +137,15 @@
 
                 <div class="result-panel chart-box">
                     <div class="chart-heading">Grafik Perkembangan Nilai Rapor</div>
-                    <canvas id="kanvasRapor" width="440" height="250" class="rapor-svg"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section id="p5" class="card-section">
-            <h2>3. Generator Ide Proyek P5 Anti-Mainstream</h2>
-            <p class="section-desc">Pilih tema P5 sekolahmu untuk mendapatkan inspirasi proyek yang aplikatif dan tidak membosankan.</p>
-
-            <div class="grid-3">
-                <div class="idea-card">
-                    <span class="idea-tag">Gaya Hidup Berkelanjutan</span>
-                    <h3>Audit Sampah Kantin Digital</h3>
-                    <p>Menghitung volume sampah plastik kantin selama 1 minggu dan membuat kampanye infografis serta sistem poin tukar botol bekas.</p>
-                </div>
-                <div class="idea-card">
-                    <span class="idea-tag">Kewirausahaan</span>
-                    <h3>Jasa Desain & Fotografi Event</h3>
-                    <p>Membentuk agensi kreatif mini antarsiswa untuk menyediakan jasa pembuatan poster, feed media sosial, dan dokumentasi acara sekolah.</p>
-                </div>
-                <div class="idea-card">
-                    <span class="idea-tag">Rekayasa & Teknologi</span>
-                    <h3>Web Pengingat Jadwal & Piket</h3>
-                    <p>Membuat halaman web sederhana berbasis GitHub Pages khusus kelas untuk melacak jadwal piket, tugas harian, dan kas kelas transparan.</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <p>Dibuat untuk membantu siswa SMA merencanakan masa depan pendidikan. Siap di-hosting di GitHub Pages.</p>
-    </footer>
-
-    <script>
-        const dataJurusan = {
-            kedokteran: {
-                nama: "Kedokteran / Pendidikan Dokter",
-                wajib: "Biologi, Kimia",
+                    <div id="grafikBatang" style="background: #ffffff; border: 2px solid #18181b; border-radius: 8px; padding: 1.25rem 1rem 0.75rem 1rem; height: 250px; display: flex; align-items: flex-end; justify-content: space-around; gap: 10px;">
+                        <div style="flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;">
+                            <span id="lbl1" style="font-size: 0.78rem; font-weight: 800; margin-bottom: 6px; background: #18181b; color: #ffffff; padding: 2px 6px; border-radius: 4px;">84</span>
+                            <div id="bar1" style="width: 100%; max-width: 44px; height: 60%; background: #2563eb; border: 2px solid #18181b; border-radius: 6px 6px 0 0; transition: height 0.25s ease;"></div>
+                            <span style="font-size: 0.78rem; font-weight: 800; margin-top: 8px;">Sem 1</span>
+                        </div>
+                        <div style="flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;">
+                            <span id="lbl2" style="font-size: 0.78rem; font-weight: 800; margin-bottom: 6px; background: #18181b; color: #ffffff; padding: 2px 6px; border-radius: 4px;">85</span>
+                            <div id="bar2" style="width: 100%; max-width: 44px; height: 65%; background: #2563eb; border: 2px solid #18181b; border-radius: 6px 6px 0 0; transition: height 0.25s ease;"></div>
+                            <span style="font-size: 0.78rem; font-weight: 800; margin-top: 8px;">Sem 2</span>
+                        </div>
+                        <div style="flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;">
