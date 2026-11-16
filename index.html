@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jalur Merdeka - Simulator Mapel & Strategi SNBP</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -31,35 +31,62 @@
 
         <section id="simulator" class="card-section">
             <h2>1. Simulator Pencocok Mapel & Jurusan SNBP</h2>
-            <p class="section-desc">Pilih jurusan kuliah impianmu untuk melihat rekomendasi mata pelajaran pilihan di SMA.</p>
+            <p class="section-desc">Cari atau klik salah satu kotak program studi impianmu untuk melihat rekomendasi mata pelajaran pilihan di SMA.</p>
 
             <div class="grid-2">
                 <div>
-                    <label class="field-label">Pilih Program Studi Impian:</label>
-                    <div class="option-grid">
-                        <label class="option-box">
+                    <label class="field-label" for="cariJurusan">Cari Program Studi:</label>
+                    <input type="text" id="cariJurusan" placeholder="Ketik nama jurusan, misal: Farmasi atau Komunikasi..." onkeyup="filterJurusan()" style="margin-bottom: 1rem;">
+
+                    <label class="field-label">Pilih Program Studi Impian (12 Jurusan):</label>
+                    <div class="option-grid" id="daftarJurusanGrid">
+                        <label class="option-box" data-nama="kedokteran pendidikan dokter">
                             <input type="radio" name="jurusanRadio" value="kedokteran" onchange="cekMapel()">
                             <span>Kedokteran</span>
                         </label>
-                        <label class="option-box">
+                        <label class="option-box" data-nama="farmasi apoteker">
+                            <input type="radio" name="jurusanRadio" value="farmasi" onchange="cekMapel()">
+                            <span>Farmasi</span>
+                        </label>
+                        <label class="option-box" data-nama="teknik informatika ilmu komputer sistem informasi">
                             <input type="radio" name="jurusanRadio" value="informatika" onchange="cekMapel()">
                             <span>Teknik Informatika</span>
                         </label>
-                        <label class="option-box">
-                            <input type="radio" name="jurusanRadio" value="manajemen" onchange="cekMapel()">
-                            <span>Manajemen & Bisnis</span>
+                        <label class="option-box" data-nama="teknik industri">
+                            <input type="radio" name="jurusanRadio" value="industri" onchange="cekMapel()">
+                            <span>Teknik Industri</span>
                         </label>
-                        <label class="option-box">
+                        <label class="option-box" data-nama="teknik sipil arsitektur">
+                            <input type="radio" name="jurusanRadio" value="sipil" onchange="cekMapel()">
+                            <span>Teknik Sipil & Arsitektur</span>
+                        </label>
+                        <label class="option-box" data-nama="manajemen bisnis akuntansi ekonomi">
+                            <input type="radio" name="jurusanRadio" value="manajemen" onchange="cekMapel()">
+                            <span>Manajemen & Akuntansi</span>
+                        </label>
+                        <label class="option-box" data-nama="ilmu hukum">
                             <input type="radio" name="jurusanRadio" value="hukum" onchange="cekMapel()">
                             <span>Ilmu Hukum</span>
                         </label>
-                        <label class="option-box">
+                        <label class="option-box" data-nama="psikologi">
                             <input type="radio" name="jurusanRadio" value="psikologi" onchange="cekMapel()">
                             <span>Psikologi</span>
                         </label>
-                        <label class="option-box">
-                            <input type="radio" name="jurusanRadio" value="sipil" onchange="cekMapel()">
-                            <span>Teknik Sipil & Arsitektur</span>
+                        <label class="option-box" data-nama="ilmu komunikasi public relations jurnalistik">
+                            <input type="radio" name="jurusanRadio" value="komunikasi" onchange="cekMapel()">
+                            <span>Ilmu Komunikasi</span>
+                        </label>
+                        <label class="option-box" data-nama="hubungan internasional hi politik">
+                            <input type="radio" name="jurusanRadio" value="hi" onchange="cekMapel()">
+                            <span>Hubungan Internasional</span>
+                        </label>
+                        <label class="option-box" data-nama="desain komunikasi visual dkv seni rupa">
+                            <input type="radio" name="jurusanRadio" value="dkv" onchange="cekMapel()">
+                            <span>Desain Komunikasi Visual</span>
+                        </label>
+                        <label class="option-box" data-nama="pendidikan guru sekolah dasar pgsd keguruan">
+                            <input type="radio" name="jurusanRadio" value="pgsd" onchange="cekMapel()">
+                            <span>Pendidikan Guru (PGSD)</span>
                         </label>
                     </div>
 
@@ -69,7 +96,7 @@
                 </div>
 
                 <div id="hasilMapel" class="result-panel">
-                    <p class="placeholder-text">Silakan klik salah satu kotak jurusan di samping untuk melihat rekomendasi mata pelajaran pendukung SNBP.</p>
+                    <p style="font-size: 0.9rem; color: var(--ink-secondary); text-align: center;">Silakan klik salah satu kotak jurusan di samping untuk melihat rekomendasi mata pelajaran pendukung SNBP.</p>
                 </div>
             </div>
         </section>
@@ -78,9 +105,9 @@
             <h2>2. Kalkulator Tren Nilai Rapor (Semester 1 - 5)</h2>
             <p class="section-desc">Masukkan rata-rata nilai rapor per semester (skala 0 - 100) untuk melihat grafik kestabilan nilaimu.</p>
 
-            <div class="grid-2 align-center">
-                <div class="input-stack">
-                    <div class="grid-2 compact-grid">
+            <div class="grid-2" style="align-items: center;">
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="grid-2" style="margin-top: 0; gap: 1rem;">
                         <div>
                             <label class="field-label" for="sem1">Semester 1 (Kelas 10)</label>
                             <input type="number" id="sem1" value="84" min="0" max="100" step="0.01" onchange="updateGrafik()">
@@ -108,7 +135,7 @@
                     <div id="statusTren" class="status-banner status-good"></div>
                 </div>
 
-                <div class="result-panel chart-box" id="wadahGrafik"></div>
+                <div class="result-panel" id="wadahGrafik" style="padding: 1rem;"></div>
             </div>
         </section>
 
@@ -141,6 +168,6 @@
         <p>Dibuat untuk membantu siswa SMA merencanakan masa depan pendidikan. Siap di-hosting di GitHub Pages.</p>
     </footer>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
