@@ -150,8 +150,7 @@ function gambarGrafikSVG(nilai) {
     const areaLebar = lebar - padKiri - padKanan;
     const areaTinggi = tinggi - padAtas - padBawah;
 
-    const daftarMin = nilai.concat([70]);
-    const minNilai = Math.min.apply(null, daftarMin);
+    const minNilai = Math.min(...nilai, 70);
     const batasBawah = Math.max(0, Math.floor((minNilai - 5) / 5) * 5);
     const batasAtas = 100;
     const rentang = (batasAtas - batasBawah) || 1;
@@ -166,9 +165,10 @@ function gambarGrafikSVG(nilai) {
         return (i === 0 ? 'M ' : 'L ') + t.x.toFixed(1) + ' ' + t.y.toFixed(1);
     }).join(' ');
 
-    const titikAkhir = titik[titik.length - 1];
-    const titikAwal = titik[0];
-    const jalurArea = jalurGaris + ' L ' + titikAkhir.x.toFixed(1) + ' ' + (padAtas + areaTinggi) + ' L ' + titikAwal.x.toFixed(1) + ' ' + (padAtas + areaTinggi) + ' Z';
+    const titikAkhir = titik.at(-1);
+    const titikAwal = titik.at(0);
+    const dasarY = padAtas + areaTinggi;
+    const jalurArea = `${jalurGaris} L ${titikAkhir.x.toFixed(1)} ${dasarY} L ${titikAwal.x.toFixed(1)} ${dasarY} Z`;
 
     let gridHorizontal = '';
     const langkah = 4;
@@ -197,8 +197,8 @@ function gambarGrafikSVG(nilai) {
         </div>
         <svg viewBox="0 0 ${lebar} ${tinggi}" style="width: 100%; height: auto; background: #ffffff; border: 2px solid #18181b; border-radius: 8px; display: block;">
             ${gridHorizontal}
-            <line x1="${padKiri}" y1="${padAtas}" x2="${padKiri}" y2="${padAtas + areaTinggi}" stroke="#18181b" stroke-width="2" />
-            <line x1="${padKiri}" y1="${padAtas + areaTinggi}" x2="${lebar - padKanan}" y2="${padAtas + areaTinggi}" stroke="#18181b" stroke-width="2" />
+            <line x1="${padKiri}" y1="${padAtas}" x2="${padKiri}" y2="${dasarY}" stroke="#18181b" stroke-width="2" />
+            <line x1="${padKiri}" y1="${dasarY}" x2="${lebar - padKanan}" y2="${dasarY}" stroke="#18181b" stroke-width="2" />
             <path d="${jalurArea}" fill="rgba(37, 99, 235, 0.14)" />
             <path d="${jalurGaris}" fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" />
             ${elemenTitik}
@@ -221,3 +221,7 @@ function tampilkanStatusAnalisis(nilai) {
         }
     }
 
+    const semAwal = nilai.at(0);
+    const semAkhir = nilai.at(-1);
+
+    if (jumlahTurun === 0 && semAkhir > semAwal) {
