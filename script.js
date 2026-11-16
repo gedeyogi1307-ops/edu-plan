@@ -184,13 +184,10 @@ function cekMapel() {
 function bacaSatuNilai(id) {
     const el = document.getElementById(id);
     if (!el) return 0;
-
-    let teks = el.value.trim();
+    const teks = el.value.trim();
     if (teks === "") return 0;
-
     let angka = parseFloat(teks);
     if (isNaN(angka)) return 0;
-
     if (angka > 100) {
         angka = 100;
         el.value = 100;
@@ -228,8 +225,17 @@ function updateGrafik() {
     const v4 = bacaSatuNilai("sem4");
     const v5 = bacaSatuNilai("sem5");
 
-    const nilaiValid = [v1, v2, v3, v4, v5].filter(function(n) { return n > 0; });
-    const minVal = nilaiValid.length > 0 ? Math.min.apply(null, nilaiValid.concat([65])) : 65;
+    const nilaiValid = new Array();
+    if (v1 > 0) nilaiValid.push(v1);
+    if (v2 > 0) nilaiValid.push(v2);
+    if (v3 > 0) nilaiValid.push(v3);
+    if (v4 > 0) nilaiValid.push(v4);
+    if (v5 > 0) nilaiValid.push(v5);
+
+    let minVal = 65;
+    if (nilaiValid.length > 0) {
+        minVal = Math.min.apply(null, nilaiValid);
+    }
     const minSkala = Math.max(0, minVal - 10);
 
     aturBatang(1, v1, minSkala);
@@ -254,7 +260,6 @@ function updateGrafik() {
         if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Data Belum Lengkap: ";
-            teksStatus.textContent = "Silakan isi seluruh nilai semester 1 sampai 5 dengan nilai asli (lebih dari 0) untuk melihat analisis tren SNBP yang akurat.";
         if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Data Belum Lengkap: ";
