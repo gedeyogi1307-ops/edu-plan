@@ -242,12 +242,13 @@ function updateGrafik() {
 
         const judulStatus = document.createElement("strong");
         const teksStatus = document.createElement("span");
+        const rataAngka = parseFloat(rataRata);
 
         if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Data Belum Lengkap: ";
             teksStatus.textContent = "Silakan isi seluruh nilai semester 1 sampai 5 dengan nilai asli (lebih dari 0) untuk melihat analisis tren SNBP yang akurat.";
-        } else if (parseFloat(rataRata) < 75) {
+        } else if (rataAngka < 75) {
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Perlu Peningkatan: ";
             teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Nilai masih di bawah batas aman persaingan SNBP. Fokus kejar nilai pada semester yang tersisa.";
@@ -259,6 +260,10 @@ function updateGrafik() {
             statusEl.className = "status-banner status-good";
             judulStatus.textContent = "Tren Konsisten Stabil: ";
             teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Nilaimu terjaga sangat stabil tanpa penurunan dari semester 1 hingga 5.";
+        } else if (rataAngka >= 90) {
+            statusEl.className = "status-banner status-good";
+            judulStatus.textContent = "Rata-Rata Sangat Tinggi: ";
+            teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Meskipun ada sedikit penurunan di semester tertentu, capaian nilaimu tetap sangat kompetitif untuk SNBP.";
         } else if (v5 >= v1 && jumlahTurun === 1) {
             statusEl.className = "status-banner status-good";
             judulStatus.textContent = "Tren Cukup Stabil: ";
@@ -266,7 +271,7 @@ function updateGrafik() {
         } else {
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Perhatian: ";
-            teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Terdeteksi penurunan tren nilai pada beberapa semester. Fokus tingkatkan nilai mata pelajaran pendukung di semester berikutnya.";
+            teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Terdeteksi penurunan grafik pada " + jumlahTurun + " semester. Usahakan menjaga kestabilan nilai pada mata pelajaran pendukung.";
         }
 
         statusEl.appendChild(judulStatus);
