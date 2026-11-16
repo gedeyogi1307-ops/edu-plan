@@ -64,8 +64,6 @@ function cekMapel() {
     `;
 }
 
-let raporChart = null;
-
 function ambilNilaiInput() {
     return [
         parseFloat(document.getElementById('sem1').value) || 0,
@@ -76,57 +74,73 @@ function ambilNilaiInput() {
     ];
 }
 
-function initChart() {
-    const canvas = document.getElementById('raporChart');
-    if (!canvas) return;
+function gambarGrafikSVG(nilai) {
+    const wadah = document.getElementById('wadahGrafik');
+    if (!wadah) return;
 
-    const ctx = canvas.getContext('2d');
-    const nilaiAwal = ambilNilaiInput();
+    const lebar = 440;
+    const tinggi = 260;
+    const padKiri = 45;
+    const padKanan = 25;
+    const padAtas = 30;
+    const padBawah = 40;
 
-    raporChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
-            datasets: [{
-                label: 'Rata-rata Nilai Rapor',
-                data: nilaiAwal,
-                borderColor: '#2563eb',
-                backgroundColor: 'rgba(37, 99, 235, 0.15)',
-                borderWidth: 3,
-                tension: 0.2,
-                fill: true,
-                pointBackgroundColor: '#18181b',
-                pointRadius: 5
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    min: 60,
-                    max: 100
-                }
-            }
-        }
+    const areaLebar = lebar - padKiri - padKanan;
+    const areaTinggi = tinggi - padAtas - padBawah;
+
+    const minNilai = Math.min(...nilai, 70);
+    const batasBawah = Math.max(0, Math.floor((minNilai - 5) / 5) * 5);
+    const batasAtas = 100;
+    const rentang = batasAtas - batasBawah || 1;
+
+    const titik = nilai.map((val, idx) => {
+        const nilaiAman = Math.min(100, Math.max(0, val));
+        const x = padKiri + (idx * (areaLebar / (nilai.length - 1)));
+        const y = padAtas + areaTinggi - (((nilaiAman - batasBawah) / rentang) * areaTinggi);
+        return { x, y, val: nilaiAman };
     });
 
-    tampilkanStatusAnalisis(nilaiAwal);
-}
+    const jalurGaris = titik.map((t, i) => `${i === 0 ? 'M' : 'L'} ${t.x.toFixed(1)} ${t.y.toFixed(1)}`).join(' ');
+    const jalurArea = `${jalurGaris} L ${titik[titik.length - 1].x.toFixed(1)} ${padAtas + areaTinggi} L ${titik[0].x.toFixed(1)} ${padAtas + areaTinggi} Z`;
 
-function updateGrafik() {
-    const nilai = ambilNilaiInput();
-
-    if (raporChart) {
-        raporChart.data.datasets[0].data = nilai;
-        raporChart.update();
+    let gridHorizontal = '';
+    const langkah = 4;
+    for (let i = 0; i <= langkah; i++) {
+        const nilaiLabel = Math.round(batasBawah + (rentang / langkah) * i);
+        const yPos = padAtas + areaTinggi - ((areaTinggi / langkah) * i);
+        gridHorizontal += `
+            <line x1="${padKiri}" y1="${yPos}" x2="${lebar - padKanan}" y2="${yPos}" stroke="#d4d4d8" stroke-width="1.5" stroke-dasharray="4 4" />
+            <text x="${padKiri - 8}" y="${yPos + 4}" text-anchor="end" font-size="11" font-weight="700" fill="#52525b">${nilaiLabel}</text>
+        `;
     }
 
-    tampilkanStatusAnalisis(nilai);
+    const labelSemester = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'];
+    const elemenTitik = titik.map((t, i) => `
+        <text x="${t.x}" y="${tinggi - 12}" text-anchor="middle" font-size="11" font-weight="800" fill="#18181b">${labelSemester[i]}</text>
+        <circle cx="${t.x}" cy="${t.y}" r="6" fill="#2563eb" stroke="#18181b" stroke-width="2.5" />
+        <rect x="${t.x - 18}" y="${t.y - 26}" width="36" height="18" rx="4" fill="#18181b" />
+        <text x="${t.x}" y="${t.y - 14}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">${t.val}</text>
+    `).join('');
+
+    wadah.innerHTML = `
+        <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.5rem; color: var(--ink-primary);">
+            Grafik Perkembangan Nilai Rapor
+        </div>
+        <svg viewBox="0 0 ${lebar} ${tinggi}" style="width: 100%; height: auto; background: #ffffff; border: 2px solid #18181b; border-radius: 8px; display: block;">
+            ${gridHorizontal}
+            <line x1="${padKiri}" y1="${padAtas}" x2="${padKiri}" y2="${padAtas + areaTinggi}" stroke="#18181b" stroke-width="2" />
+            <line x1="${padKiri}" y1="${padAtas + areaTinggi}" x2="${lebar - padKanan}" y2="${padAtas + areaTinggi}" stroke="#18181b" stroke-width="2" />
+            <path d="${jalurArea}" fill="rgba(37, 99, 235, 0.14)" />
+            <path d="${jalurGaris}" fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" />
+            ${elemenTitik}
+        </svg>
+    `;
 }
 
 function tampilkanStatusAnalisis(nilai) {
     const rataRata = (nilai.reduce((a, b) => a + b, 0) / nilai.length).toFixed(2);
     const statusEl = document.getElementById('statusTren');
+    if (!statusEl) return;
 
     let jumlahTurun = 0;
     for (let i = 1; i < nilai.length; i++) {
@@ -147,4 +161,10 @@ function tampilkanStatusAnalisis(nilai) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', initChart);
+function updateGrafik() {
+    const nilai = ambilNilaiInput();
+    gambarGrafikSVG(nilai);
+    tampilkanStatusAnalisis(nilai);
+}
+
+document.addEventListener('DOMContentLoaded', updateGrafik);
