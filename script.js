@@ -1,227 +1,492 @@
-const dataJurusan = {
-    kedokteran: {
-        nama: "Kedokteran / Pendidikan Dokter",
-        wajib: ["Biologi", "Kimia"],
-        saran: ["Matematika Tingkat Lanjut", "Fisika", "Bahasa Inggris Tingkat Lanjut"],
-        tips: "Pastikan nilai Biologi dan Kimia selalu di atas 88 dan mengalami kenaikan tiap semester."
-    },
-    farmasi: {
-        nama: "Farmasi",
-        wajib: ["Biologi", "Kimia"],
-        saran: ["Matematika Tingkat Lanjut", "Fisika", "Bahasa Inggris Tingkat Lanjut"],
-        tips: "Kimia adalah fondasi utama di Farmasi. Perkuat pemahaman kimia organik dan perhitungan dosis."
-    },
-    informatika: {
-        nama: "Teknik Informatika / Ilmu Komputer",
-        wajib: ["Matematika Tingkat Lanjut"],
-        saran: ["Fisika", "Informatika", "Bahasa Inggris Tingkat Lanjut"],
-        tips: "Kombinasi Matematika Tingkat Lanjut dan Informatika sangat memperkuat portofolio akademik."
-    },
-    industri: {
-        nama: "Teknik Industri",
-        wajib: ["Matematika Tingkat Lanjut", "Fisika"],
-        saran: ["Ekonomi", "Kimia", "Informatika"],
-        tips: "Teknik Industri memadukan rekayasa dan manajemen, sehingga mengambil Ekonomi sebagai pelengkap sangat disarankan."
-    },
-    sipil: {
-        nama: "Teknik Sipil / Arsitektur",
-        wajib: ["Fisika", "Matematika Tingkat Lanjut"],
-        saran: ["Kimia", "Seni Rupa (khusus Arsitektur)", "Informatika"],
-        tips: "Untuk Arsitektur, siapkan juga portofolio gambar bentuk dan desain bangunan."
-    },
-    manajemen: {
-        nama: "Manajemen / Bisnis / Akuntansi",
-        wajib: ["Ekonomi", "Matematika Tingkat Lanjut"],
-        saran: ["Sosiologi", "Bahasa Inggris Tingkat Lanjut", "Informatika"],
-        tips: "Ekonomi menjadi komponen penilaian utama. Perkuat juga kemampuan analisis data dasar."
-    },
-    hukum: {
-        nama: "Ilmu Hukum",
-        wajib: ["Sosiologi", "Pendidikan Pancasila (Mapel Wajib)"],
-        saran: ["Antropologi", "Sejarah Tingkat Lanjut", "Bahasa Indonesia Tingkat Lanjut"],
-        tips: "Sosiologi dan pemahaman regulasi sosial sangat krusial untuk jurusan Hukum."
-    },
-    psikologi: {
-        nama: "Psikologi",
-        wajib: ["Sosiologi", "Biologi"],
-        saran: ["Matematika Tingkat Lanjut", "Antropologi", "Bahasa Inggris Tingkat Lanjut"],
-        tips: "Beberapa kampus memasukkan Psikologi ke rumpun Saintek (Biologi) dan sebagian Soshum (Sosiologi). Mengambil keduanya sangat aman."
-    },
-    komunikasi: {
-        nama: "Ilmu Komunikasi",
-        wajib: ["Sosiologi"],
-        saran: ["Antropologi", "Bahasa Inggris Tingkat Lanjut", "Bahasa Indonesia Tingkat Lanjut", "Ekonomi"],
-        tips: "Aktif di kegiatan jurnalistik sekolah, OSIS, atau lomba debat dapat menambah nilai portofolio."
-    },
-    hi: {
-        nama: "Hubungan Internasional",
-        wajib: ["Sosiologi", "Bahasa Inggris Tingkat Lanjut"],
-        saran: ["Sejarah Tingkat Lanjut", "Geografi", "Ekonomi", "Bahasa Asing Lainnya"],
-        tips: "Kemampuan bahasa asing dan wawasan geopolitik global menjadi nilai tambah utama."
-    },
-    dkv: {
-        nama: "Desain Komunikasi Visual (DKV)",
-        wajib: ["Seni Budaya / Seni Rupa"],
-        saran: ["Informatika", "Sosiologi", "Bahasa Inggris Tingkat Lanjut", "Antropologi"],
-        tips: "Wajib menyiapkan portofolio karya seni dan desain sesuai ketentuan panitia SNBP."
-    },
-    pgsd: {
-        nama: "Pendidikan Guru Sekolah Dasar (PGSD)",
-        wajib: ["Sosiologi", "Pendidikan Pancasila (Mapel Wajib)"],
-        saran: ["Biologi", "Matematika Tingkat Lanjut", "Bahasa Indonesia Tingkat Lanjut"],
-        tips: "Guru SD mengajar lintas bidang, sehingga kestabilan nilai di semua mata pelajaran umum sangat diperhatikan."
-    }
-};
+@import url('https://googleapis.com');
 
-function filterJurusan() {
-    const kataKunci = document.getElementById("cariJurusan").value.toLowerCase();
-    const semuaKotak = document.querySelectorAll("#daftarJurusanGrid .option-box");
-
-    semuaKotak.forEach(function(kotak) {
-        const namaJurusan = kotak.getAttribute("data-nama");
-        if (namaJurusan.indexOf(kataKunci) !== -1) {
-            kotak.style.display = "flex";
-        } else {
-            kotak.style.display = "none";
-        }
-    });
+:root {
+  --bg-page: #f4f4f0;
+  --bg-card: #ffffff;
+  --bg-subtle: #eaeae4;
+  --ink-primary: #18181b;
+  --ink-secondary: #52525b;
+  --accent-primary: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-secondary: #eab308;
+  --border-dark: #18181b;
+  --border-light: #d4d4d8;
+  --status-success-bg: #dcfce7;
+  --status-success-text: #166534;
+  --status-warn-bg: #fef9c3;
+  --status-warn-text: #854d0e;
 }
 
-function cekMapel() {
-    const terpilih = document.querySelector('input[name="jurusanRadio"]:checked');
-    const container = document.getElementById("hasilMapel");
-
-    if (!terpilih) {
-        return;
-    }
-
-    const data = dataJurusan[terpilih.value];
-    container.innerHTML = `
-        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-primary);">${data.nama}</h3>
-        <div style="margin-top: 0.85rem;">
-            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #be123c;">Prioritas Utama (Mapel Pendukung SNBP):</span>
-            <ul style="margin-left: 1.25rem; margin-top: 0.35rem; font-size: 0.9rem; font-weight: 700;">
-                ${data.wajib.map(function(m) { return `<li>${m}</li>`; }).join('')}
-            </ul>
-        </div>
-        <div style="margin-top: 0.85rem;">
-            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ink-secondary);">Mapel Pelengkap yang Disarankan:</span>
-            <p style="font-size: 0.88rem; font-weight: 600; margin-top: 0.25rem;">${data.saran.join(", ")}</p>
-        </div>
-        <div style="margin-top: 1rem; padding: 0.75rem; background-color: #ffffff; border: 2px solid var(--border-dark); border-radius: 6px; font-size: 0.82rem;">
-            <strong>Strategi:</strong> ${data.tips}
-        </div>
-    `;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-function ambilNilaiInput() {
-    const ids = ['sem1', 'sem2', 'sem3', 'sem4', 'sem5'];
-    return ids.map(function(id) {
-        const el = document.getElementById(id);
-        let angka = parseFloat(el.value);
-        if (isNaN(angka)) {
-            angka = 0;
-        }
-        if (angka > 100) {
-            angka = 100;
-            el.value = 100;
-        }
-        if (angka < 0) {
-            angka = 0;
-            el.value = 0;
-        }
-        return angka;
-    });
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-page);
+  background-image: radial-gradient(#d4d4d8 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--ink-primary);
+  line-height: 1.6;
 }
 
-function gambarGrafikSVG(nilai) {
-    const wadah = document.getElementById('wadahGrafik');
-    if (!wadah) {
-        return;
-    }
-
-    const lebar = 440;
-    const tinggi = 260;
-    const padKiri = 45;
-    const padKanan = 25;
-    const padAtas = 30;
-    const padBawah = 40;
-
-    const areaLebar = lebar - padKiri - padKanan;
-    const areaTinggi = tinggi - padAtas - padBawah;
-
-    const minNilai = Math.min(...nilai, 70);
-    const batasBawah = Math.max(0, Math.floor((minNilai - 5) / 5) * 5);
-    const batasAtas = 100;
-    const rentang = (batasAtas - batasBawah) || 1;
-
-    const titik = nilai.map(function(val, idx) {
-        const x = padKiri + (idx * (areaLebar / (nilai.length - 1)));
-        const y = padAtas + areaTinggi - (((val - batasBawah) / rentang) * areaTinggi);
-        return { x: x, y: y, val: val };
-    });
-
-    const jalurGaris = titik.map(function(t, i) {
-        return (i === 0 ? 'M ' : 'L ') + t.x.toFixed(1) + ' ' + t.y.toFixed(1);
-    }).join(' ');
-
-    const titikAkhir = titik.at(-1);
-    const titikAwal = titik.at(0);
-    const dasarY = padAtas + areaTinggi;
-    const jalurArea = `${jalurGaris} L ${titikAkhir.x.toFixed(1)} ${dasarY} L ${titikAwal.x.toFixed(1)} ${dasarY} Z`;
-
-    let gridHorizontal = '';
-    const langkah = 4;
-    for (let i = 0; i <= langkah; i++) {
-        const nilaiLabel = Math.round(batasBawah + (rentang / langkah) * i);
-        const yPos = padAtas + areaTinggi - ((areaTinggi / langkah) * i);
-        gridHorizontal += `
-            <line x1="${padKiri}" y1="${yPos}" x2="${lebar - padKanan}" y2="${yPos}" stroke="#d4d4d8" stroke-width="1.5" stroke-dasharray="4 4" />
-            <text x="${padKiri - 8}" y="${yPos + 4}" text-anchor="end" font-size="11" font-weight="700" fill="#52525b">${nilaiLabel}</text>
-        `;
-    }
-
-    const labelSemester = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'];
-    const elemenTitik = titik.map(function(t, i) {
-        return `
-            <text x="${t.x}" y="${tinggi - 12}" text-anchor="middle" font-size="11" font-weight="800" fill="#18181b">${labelSemester[i]}</text>
-            <circle cx="${t.x}" cy="${t.y}" r="6" fill="#2563eb" stroke="#18181b" stroke-width="2.5" />
-            <rect x="${t.x - 18}" y="${t.y - 26}" width="36" height="18" rx="4" fill="#18181b" />
-            <text x="${t.x}" y="${t.y - 14}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">${t.val}</text>
-        `;
-    }).join('');
-
-    wadah.innerHTML = `
-        <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.5rem; color: var(--ink-primary);">
-            Grafik Perkembangan Nilai Rapor
-        </div>
-        <svg viewBox="0 0 ${lebar} ${tinggi}" style="width: 100%; height: auto; background: #ffffff; border: 2px solid #18181b; border-radius: 8px; display: block;">
-            ${gridHorizontal}
-            <line x1="${padKiri}" y1="${padAtas}" x2="${padKiri}" y2="${dasarY}" stroke="#18181b" stroke-width="2" />
-            <line x1="${padKiri}" y1="${dasarY}" x2="${lebar - padKanan}" y2="${dasarY}" stroke="#18181b" stroke-width="2" />
-            <path d="${jalurArea}" fill="rgba(37, 99, 235, 0.14)" />
-            <path d="${jalurGaris}" fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" />
-            ${elemenTitik}
-        </svg>
-    `;
+nav {
+  background-color: var(--ink-primary);
+  color: #ffffff;
+  border-bottom: 3px solid var(--border-dark);
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
-function tampilkanStatusAnalisis(nilai) {
-    const total = nilai.reduce(function(a, b) { return a + b; }, 0);
-    const rataRata = (total / nilai.length).toFixed(2);
-    const statusEl = document.getElementById('statusTren');
-    if (!statusEl) {
-        return;
-    }
+.nav-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    let jumlahTurun = 0;
-    for (let i = 1; i < nilai.length; i++) {
-        if (nilai[i] < nilai[i - 1]) {
-            jumlahTurun++;
-        }
-    }
+.brand-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
 
-    const semAwal = nilai.at(0);
-    const semAkhir = nilai.at(-1);
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
 
-    if (jumlahTurun === 0 && semAkhir > semAwal) {
+.nav-links a {
+  color: #e4e4e7;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.nav-links a:hover {
+  background-color: var(--accent-secondary);
+  color: var(--ink-primary);
+  border-color: var(--border-dark);
+}
+
+header {
+  background-color: var(--bg-card);
+  border-bottom: 3px solid var(--border-dark);
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+}
+
+.header-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.badge-tag {
+  display: inline-block;
+  background-color: var(--accent-secondary);
+  color: var(--ink-primary);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.9rem;
+  border: 2px solid var(--border-dark);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0px var(--border-dark);
+}
+
+header h1 {
+  margin-top: 1.25rem;
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+header p {
+  margin-top: 1rem;
+  color: var(--ink-secondary);
+  font-size: 1.05rem;
+}
+
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.card-section {
+  background-color: var(--bg-card);
+  border: 3px solid var(--border-dark);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 6px 6px 0px var(--border-dark);
+}
+
+.card-section h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  border-bottom: 2px solid var(--bg-subtle);
+  padding-bottom: 0.75rem;
+}
+
+.section-desc {
+  font-size: 0.92rem;
+  color: var(--ink-secondary);
+  margin-top: 0.5rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+  margin-top: 1.5rem;
+}
+
+.grid-2.align-center {
+  align-items: center;
+}
+
+.grid-2.compact-grid {
+  margin-top: 0;
+  gap: 1rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.input-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-input {
+  margin-bottom: 1rem;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.option-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-dark);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 3px 3px 0px var(--border-dark);
+  transition: transform 0.1s ease, background-color 0.15s ease;
+  user-select: none;
+}
+
+.option-box:hover {
+  background-color: var(--bg-subtle);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--border-dark);
+}
+
+.option-box input[type="checkbox"],
+.option-box input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-dark);
+  border-radius: 4px;
+  background-color: #ffffff;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: grid;
+  place-content: center;
+}
+
+.option-box input[type="radio"] {
+  border-radius: 50%;
+}
+
+.option-box input[type="checkbox"]:checked,
+.option-box input[type="radio"]:checked {
+  background-color: var(--accent-primary);
+}
+
+.option-box input[type="checkbox"]:checked::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  background-color: #ffffff;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.option-box input[type="radio"]:checked::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+.option-box:has(input:checked) {
+  background-color: #dbeafe;
+  border-color: var(--accent-primary);
+  box-shadow: 3px 3px 0px var(--accent-primary);
+}
+
+label.field-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+select,
+input[type="number"],
+input[type="text"] {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-dark);
+  border-radius: 8px;
+  outline: none;
+}
+
+select:focus,
+input[type="number"]:focus,
+input[type="text"]:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 3px 3px 0px var(--accent-primary);
+}
+
+.btn-solid {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  background-color: var(--accent-primary);
+  border: 2px solid var(--border-dark);
+  border-radius: 8px;
+  box-shadow: 4px 4px 0px var(--border-dark);
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.15s ease;
+}
+
+.btn-solid:hover {
+  background-color: var(--accent-hover);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px var(--border-dark);
+}
+
+.btn-solid:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--border-dark);
+}
+
+.result-panel {
+  background-color: var(--bg-subtle);
+  border: 2px solid var(--border-dark);
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.result-panel.chart-box {
+  padding: 1rem;
+  min-height: 280px;
+}
+
+.placeholder-text {
+  font-size: 0.9rem;
+  color: var(--ink-secondary);
+  text-align: center;
+}
+
+.result-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+
+.result-block {
+  margin-top: 0.85rem;
+}
+
+.result-label-priority {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #be123c;
+  display: block;
+}
+
+.result-value-priority {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin-top: 0.25rem;
+  color: var(--ink-primary);
+}
+
+.result-label-secondary {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  display: block;
+}
+
+.result-value-secondary {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.strategy-box {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #ffffff;
+  border: 2px solid var(--border-dark);
+  border-radius: 6px;
+  font-size: 0.82rem;
+}
+
+.chart-heading {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+  color: var(--ink-primary);
+}
+
+.rapor-svg {
+  width: 100%;
+  height: auto;
+  background-color: #ffffff;
+  border: 2px solid #18181b;
+  border-radius: 8px;
+  display: block;
+}
+
+.note-box {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  background-color: var(--status-warn-bg);
+  color: var(--status-warn-text);
+  border: 2px solid var(--border-dark);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.status-banner {
+  padding: 0.9rem 1rem;
+  border: 2px solid var(--border-dark);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.status-good {
+  background-color: var(--status-success-bg);
+  color: var(--status-success-text);
+}
+
+.status-warn {
+  background-color: var(--status-warn-bg);
+  color: var(--status-warn-text);
+}
+
+.idea-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-dark);
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 4px 4px 0px var(--border-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.idea-tag {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  background-color: var(--bg-subtle);
+  border: 1.5px solid var(--border-dark);
+  border-radius: 4px;
+}
+
+.idea-card h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.idea-card p {
+  font-size: 0.86rem;
+  color: var(--ink-secondary);
+}
+
+footer {
+  background-color: var(--ink-primary);
+  color: #a1a1aa;
+  border-top: 3px solid var(--border-dark);
+  padding: 2rem 1.5rem;
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3,
+  .option-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+  }
+}
