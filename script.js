@@ -255,7 +255,11 @@ function updateGrafik() {
             statusEl.className = "status-banner status-good";
             judulStatus.textContent = "Tren Sangat Bagus: ";
             teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Grafik nilaimu konsisten naik dari semester 1 hingga 5, sangat ideal untuk penilaian SNBP.";
-        } else if (v5 >= v1 && jumlahTurun <= 1) {
+        } else if (jumlahTurun === 0 && v5 === v1) {
+            statusEl.className = "status-banner status-good";
+            judulStatus.textContent = "Tren Konsisten Stabil: ";
+            teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Nilaimu terjaga sangat stabil tanpa penurunan dari semester 1 hingga 5.";
+        } else if (v5 >= v1 && jumlahTurun === 1) {
             statusEl.className = "status-banner status-good";
             judulStatus.textContent = "Tren Cukup Stabil: ";
             teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Sempat ada sedikit penurunan, tetapi grafik akhirmu berhasil pulih dan meningkat.";
