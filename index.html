@@ -135,7 +135,10 @@
                     <div id="statusTren" class="status-banner status-good"></div>
                 </div>
 
-                <div class="result-panel chart-box" id="wadahGrafik"></div>
+                <div class="result-panel chart-box">
+                    <div class="chart-heading">Grafik Perkembangan Nilai Rapor</div>
+                    <canvas id="kanvasRapor" width="440" height="250" class="rapor-svg"></canvas>
+                </div>
             </div>
         </section>
 
@@ -173,4 +176,3 @@
             kedokteran: {
                 nama: "Kedokteran / Pendidikan Dokter",
                 wajib: "Biologi, Kimia",
-                saran: "Matematika Tingkat Lanjut, Fisika, Bahasa Inggris Tingkat Lanjut",
