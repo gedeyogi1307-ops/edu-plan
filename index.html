@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jalur Merdeka - Simulator Mapel & Strategi SNBP</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
@@ -69,38 +69,38 @@
                 </div>
 
                 <div id="hasilMapel" class="result-panel">
-                    <p style="font-size: 0.9rem; color: var(--ink-secondary); text-align: center;">Silakan klik salah satu kotak jurusan di samping untuk melihat rekomendasi mata pelajaran pendukung SNBP.</p>
+                    <p class="placeholder-text">Silakan klik salah satu kotak jurusan di samping untuk melihat rekomendasi mata pelajaran pendukung SNBP.</p>
                 </div>
             </div>
         </section>
 
         <section id="kalkulator" class="card-section">
             <h2>2. Kalkulator Tren Nilai Rapor (Semester 1 - 5)</h2>
-            <p class="section-desc">Masukkan rata-rata nilai rapor per semester untuk melihat grafik kestabilan nilaimu.</p>
+            <p class="section-desc">Masukkan rata-rata nilai rapor per semester (skala 0 - 100) untuk melihat grafik kestabilan nilaimu.</p>
 
-            <div class="grid-2" style="align-items: center;">
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div class="grid-2" style="margin-top: 0; gap: 1rem;">
+            <div class="grid-2 align-center">
+                <div class="input-stack">
+                    <div class="grid-2 compact-grid">
                         <div>
                             <label class="field-label" for="sem1">Semester 1 (Kelas 10)</label>
-                            <input type="number" id="sem1" value="84" min="0" max="100" step="0.01" oninput="updateGrafik()">
+                            <input type="number" id="sem1" value="84" min="0" max="100" step="0.01" onchange="updateGrafik()">
                         </div>
                         <div>
                             <label class="field-label" for="sem2">Semester 2 (Kelas 10)</label>
-                            <input type="number" id="sem2" value="85" min="0" max="100" step="0.01" oninput="updateGrafik()">
+                            <input type="number" id="sem2" value="85" min="0" max="100" step="0.01" onchange="updateGrafik()">
                         </div>
                         <div>
                             <label class="field-label" for="sem3">Semester 3 (Kelas 11)</label>
-                            <input type="number" id="sem3" value="86" min="0" max="100" step="0.01" oninput="updateGrafik()">
+                            <input type="number" id="sem3" value="86" min="0" max="100" step="0.01" onchange="updateGrafik()">
                         </div>
                         <div>
                             <label class="field-label" for="sem4">Semester 4 (Kelas 11)</label>
-                            <input type="number" id="sem4" value="88" min="0" max="100" step="0.01" oninput="updateGrafik()">
+                            <input type="number" id="sem4" value="88" min="0" max="100" step="0.01" onchange="updateGrafik()">
                         </div>
                     </div>
                     <div>
                         <label class="field-label" for="sem5">Semester 5 (Kelas 12 - Target/Aktual)</label>
-                        <input type="number" id="sem5" value="90" min="0" max="100" step="0.01" oninput="updateGrafik()">
+                        <input type="number" id="sem5" value="90" min="0" max="100" step="0.01" onchange="updateGrafik()">
                     </div>
                     <button type="button" onclick="updateGrafik()" class="btn-solid">
                         Analisis Tren Nilai
@@ -108,7 +108,7 @@
                     <div id="statusTren" class="status-banner status-good"></div>
                 </div>
 
-                <div class="result-panel" id="wadahGrafik" style="padding: 1rem;"></div>
+                <div class="result-panel chart-box" id="wadahGrafik"></div>
             </div>
         </section>
 
@@ -141,6 +141,6 @@
         <p>Dibuat untuk membantu siswa SMA merencanakan masa depan pendidikan. Siap di-hosting di GitHub Pages.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=2"></script>
 </body>
 </html>
