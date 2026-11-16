@@ -183,8 +183,14 @@ function cekMapel() {
 
 function bacaSatuNilai(id) {
     const el = document.getElementById(id);
-    let angka = parseFloat(el.value);
-    if (isNaN(angka)) angka = 0;
+    if (!el) return 0;
+
+    let teks = el.value.trim();
+    if (teks === "") return 0;
+
+    let angka = parseFloat(teks);
+    if (isNaN(angka)) return 0;
+
     if (angka > 100) {
         angka = 100;
         el.value = 100;
@@ -201,11 +207,17 @@ function aturBatang(nomor, nilai, minSkala) {
     const bar = document.getElementById("bar" + nomor);
     if (lbl) lbl.textContent = nilai;
     if (bar) {
-        const rentang = 100 - minSkala;
-        let persen = ((nilai - minSkala) / rentang) * 72;
-        if (persen < 8) persen = 8;
-        if (persen > 76) persen = 76;
-        bar.style.height = persen.toFixed(1) + "%";
+        if (nilai <= 0) {
+            bar.style.height = "6%";
+            bar.style.backgroundColor = "#d4d4d8";
+        } else {
+            const rentang = 100 - minSkala;
+            let persen = ((nilai - minSkala) / rentang) * 72;
+            if (persen < 10) persen = 10;
+            if (persen > 76) persen = 76;
+            bar.style.height = persen.toFixed(1) + "%";
+            bar.style.backgroundColor = "#2563eb";
+        }
     }
 }
 
@@ -216,7 +228,8 @@ function updateGrafik() {
     const v4 = bacaSatuNilai("sem4");
     const v5 = bacaSatuNilai("sem5");
 
-    const minVal = Math.min(v1, v2, v3, v4, v5, 65);
+    const nilaiValid = [v1, v2, v3, v4, v5].filter(function(n) { return n > 0; });
+    const minVal = nilaiValid.length > 0 ? Math.min.apply(null, nilaiValid.concat([65])) : 65;
     const minSkala = Math.max(0, minVal - 10);
 
     aturBatang(1, v1, minSkala);
@@ -238,7 +251,19 @@ function updateGrafik() {
         const judulStatus = document.createElement("strong");
         const teksStatus = document.createElement("span");
 
-        if (jumlahTurun === 0 && v5 > v1) {
+        if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
+            statusEl.className = "status-banner status-warn";
+            judulStatus.textContent = "Data Belum Lengkap: ";
+            teksStatus.textContent = "Silakan isi seluruh nilai semester 1 sampai 5 dengan nilai asli (lebih dari 0) untuk melihat analisis tren SNBP yang akurat.";
+        if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
+            statusEl.className = "status-banner status-warn";
+            judulStatus.textContent = "Data Belum Lengkap: ";
+            teksStatus.textContent = "Silakan isi seluruh nilai semester 1 sampai 5 dengan nilai asli (lebih dari 0) untuk melihat analisis tren SNBP yang akurat.";
+        } else if (parseFloat(rataRata) < 75) {
+            statusEl.className = "status-banner status-warn";
+            judulStatus.textContent = "Perlu Peningkatan: ";
+            teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Nilai masih di bawah batas aman persaingan SNBP. Fokus kejar nilai pada semester yang tersisa.";
+        } else if (jumlahTurun === 0 && v5 > v1) {
             statusEl.className = "status-banner status-good";
             judulStatus.textContent = "Tren Sangat Bagus: ";
             teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Grafik nilaimu konsisten naik dari semester 1 hingga 5, sangat ideal untuk penilaian SNBP.";
@@ -247,7 +272,6 @@ function updateGrafik() {
             judulStatus.textContent = "Tren Cukup Stabil: ";
             teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Sempat ada sedikit penurunan, tetapi grafik akhirmu berhasil pulih dan meningkat.";
         } else {
-            statusEl.className = "status-banner status-warn";
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Perhatian: ";
             teksStatus.textContent = "Rata-rata keseluruhan " + rataRata + ". Terdeteksi penurunan tren nilai pada beberapa semester. Fokus tingkatkan nilai mata pelajaran pendukung di semester berikutnya.";
