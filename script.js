@@ -95,50 +95,39 @@ function muatKartuP5() {
     const wadah = document.getElementById("wadahP5");
     if (!wadah) return;
     wadah.innerHTML = "";
-
-    daftarIdeP5.forEach(function(item) {
+    for (let i = 0; i < daftarIdeP5.length; i++) {
+        const item = daftarIdeP5[i];
         const kartu = document.createElement("div");
         kartu.className = "idea-card";
-
         const tag = document.createElement("span");
         tag.className = "idea-tag";
         tag.textContent = item.tema;
-
         const judul = document.createElement("h3");
         judul.textContent = item.judul;
-
         const teks = document.createElement("p");
         teks.textContent = item.deskripsi;
-
         kartu.appendChild(tag);
         kartu.appendChild(judul);
         kartu.appendChild(teks);
         wadah.appendChild(kartu);
-    });
+    }
 }
 
 function filterJurusan() {
     const kataKunci = document.getElementById("cariJurusan").value.toLowerCase();
     const semuaKotak = document.querySelectorAll("#daftarJurusanGrid .option-box");
-
     for (let i = 0; i < semuaKotak.length; i++) {
         const kotak = semuaKotak.item(i);
         const namaJurusan = kotak.getAttribute("data-nama");
-        if (namaJurusan.indexOf(kataKunci) !== -1) {
-            kotak.style.display = "flex";
-        } else {
-            kotak.style.display = "none";
-        }
+        kotak.style.display = namaJurusan.indexOf(kataKunci) !== -1 ? "flex" : "none";
     }
 }
 
 function cekMapel() {
     const terpilih = document.querySelector('input[name="jurusanRadio"]:checked');
     const container = document.getElementById("hasilMapel");
-    if (!terpilih) return;
-
-    const kunci = terpilih.value;
-    const data = dataJurusan[kunci];
+    if (!terpilih || !container) return;
+    const data = dataJurusan[terpilih.value];
     container.innerHTML = "";
 
     const judul = document.createElement("h3");
@@ -171,9 +160,8 @@ function cekMapel() {
     blokTips.className = "strategy-box";
     const boldStrategi = document.createElement("strong");
     boldStrategi.textContent = "Strategi: ";
-    const teksStrategi = document.createTextNode(data.tips);
     blokTips.appendChild(boldStrategi);
-    blokTips.appendChild(teksStrategi);
+    blokTips.appendChild(document.createTextNode(data.tips));
 
     container.appendChild(judul);
     container.appendChild(blokWajib);
@@ -188,14 +176,8 @@ function bacaSatuNilai(id) {
     if (teks === "") return 0;
     let angka = parseFloat(teks);
     if (isNaN(angka)) return 0;
-    if (angka > 100) {
-        angka = 100;
-        el.value = 100;
-    }
-    if (angka < 0) {
-        angka = 0;
-        el.value = 0;
-    }
+    if (angka > 100) { angka = 100; el.value = 100; }
+    if (angka < 0) { angka = 0; el.value = 0; }
     return angka;
 }
 
@@ -225,17 +207,16 @@ function updateGrafik() {
     const v4 = bacaSatuNilai("sem4");
     const v5 = bacaSatuNilai("sem5");
 
-    const nilaiValid = new Array();
-    if (v1 > 0) nilaiValid.push(v1);
-    if (v2 > 0) nilaiValid.push(v2);
-    if (v3 > 0) nilaiValid.push(v3);
-    if (v4 > 0) nilaiValid.push(v4);
-    if (v5 > 0) nilaiValid.push(v5);
-
-    let minVal = 65;
-    if (nilaiValid.length > 0) {
-        minVal = Math.min.apply(null, nilaiValid);
+    let minVal = 100;
+    let adaPositif = false;
+    const daftar = [v1, v2, v3, v4, v5];
+    for (let i = 0; i < 5; i++) {
+        if (daftar[i] > 0) {
+            adaPositif = true;
+            if (daftar[i] < minVal) minVal = daftar[i];
+        }
     }
+    if (!adaPositif) minVal = 65;
     const minSkala = Math.max(0, minVal - 10);
 
     aturBatang(1, v1, minSkala);
@@ -260,6 +241,7 @@ function updateGrafik() {
         if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Data Belum Lengkap: ";
+            teksStatus.textContent = "Silakan isi seluruh nilai semester 1 sampai 5 dengan nilai asli (lebih dari 0) untuk melihat analisis tren SNBP yang akurat.";
         if (v1 === 0 || v2 === 0 || v3 === 0 || v4 === 0 || v5 === 0) {
             statusEl.className = "status-banner status-warn";
             judulStatus.textContent = "Data Belum Lengkap: ";
