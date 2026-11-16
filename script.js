@@ -64,16 +64,32 @@ function cekMapel() {
     `;
 }
 
-let raporChart;
+let raporChart = null;
+
+function ambilNilaiInput() {
+    return [
+        parseFloat(document.getElementById('sem1').value) || 0,
+        parseFloat(document.getElementById('sem2').value) || 0,
+        parseFloat(document.getElementById('sem3').value) || 0,
+        parseFloat(document.getElementById('sem4').value) || 0,
+        parseFloat(document.getElementById('sem5').value) || 0
+    ];
+}
+
 function initChart() {
-    const ctx = document.getElementById('raporChart').getContext('2d');
+    const canvas = document.getElementById('raporChart');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const nilaiAwal = ambilNilaiInput();
+
     raporChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
             datasets: [{
                 label: 'Rata-rata Nilai Rapor',
-                data:,
+                data: nilaiAwal,
                 borderColor: '#2563eb',
                 backgroundColor: 'rgba(37, 99, 235, 0.15)',
                 borderWidth: 3,
@@ -86,35 +102,49 @@ function initChart() {
         options: {
             responsive: true,
             scales: {
-                y: { min: 70, max: 100 }
+                y: {
+                    min: 60,
+                    max: 100
+                }
             }
         }
     });
-    updateGrafik();
+
+    tampilkanStatusAnalisis(nilaiAwal);
 }
 
 function updateGrafik() {
-    const nilai = [
-        parseFloat(document.getElementById('sem1').value) || 0,
-        parseFloat(document.getElementById('sem2').value) || 0,
-        parseFloat(document.getElementById('sem3').value) || 0,
-        parseFloat(document.getElementById('sem4').value) || 0,
-        parseFloat(document.getElementById('sem5').value) || 0
-    ];
+    const nilai = ambilNilaiInput();
 
-    raporChart.data.datasets[0].data = nilai;
-    raporChart.update();
+    if (raporChart) {
+        raporChart.data.datasets[0].data = nilai;
+        raporChart.update();
+    }
 
-    const rataRata = (nilai.reduce((a, b) => a + b, 0) / 5).toFixed(2);
+    tampilkanStatusAnalisis(nilai);
+}
+
+function tampilkanStatusAnalisis(nilai) {
+    const rataRata = (nilai.reduce((a, b) => a + b, 0) / nilai.length).toFixed(2);
     const statusEl = document.getElementById('statusTren');
 
-    if (nilai[4] > nilai[0] && nilai[4] >= nilai[3]) {
+    let jumlahTurun = 0;
+    for (let i = 1; i < nilai.length; i++) {
+        if (nilai[i] < nilai[i - 1]) {
+            jumlahTurun++;
+        }
+    }
+
+    if (jumlahTurun === 0 && nilai[4] > nilai[0]) {
         statusEl.className = "status-banner status-good";
-        statusEl.innerHTML = `<strong>Tren Sangat Bagus:</strong> Rata-rata keseluruhan: <strong>${rataRata}</strong>. Grafik nilaimu stabil menanjak, sangat disukai sistem seleksi SNBP.`;
+        statusEl.innerHTML = `<strong>Tren Sangat Bagus:</strong> Rata-rata keseluruhan <strong>${rataRata}</strong>. Grafik nilaimu konsisten naik dari semester 1 hingga 5, sangat ideal untuk penilaian SNBP.`;
+    } else if (nilai[4] >= nilai[0] && jumlahTurun <= 1) {
+        statusEl.className = "status-banner status-good";
+        statusEl.innerHTML = `<strong>Tren Cukup Stabil:</strong> Rata-rata keseluruhan <strong>${rataRata}</strong>. Sempat ada sedikit penurunan, tetapi grafik akhirmu berhasil pulih dan meningkat.`;
     } else {
         statusEl.className = "status-banner status-warn";
-        statusEl.innerHTML = `<strong>Perhatian:</strong> Rata-rata keseluruhan: <strong>${rataRata}</strong>. Ada penurunan di beberapa semester. Fokus tingkatkan nilai mapel pendukung di semester berikutnya.`;
+        statusEl.innerHTML = `<strong>Perhatian:</strong> Rata-rata keseluruhan <strong>${rataRata}</strong>. Terdeteksi penurunan tren nilai pada beberapa semester. Fokus tingkatkan nilai mata pelajaran pendukung di semester berikutnya.`;
     }
 }
 
-window.onload = initChart;
+document.addEventListener('DOMContentLoaded', initChart);
