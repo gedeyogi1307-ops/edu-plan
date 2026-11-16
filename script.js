@@ -77,9 +77,9 @@ function filterJurusan() {
     const kataKunci = document.getElementById("cariJurusan").value.toLowerCase();
     const semuaKotak = document.querySelectorAll("#daftarJurusanGrid .option-box");
 
-    semuaKotak.forEach(kotak => {
+    semuaKotak.forEach(function(kotak) {
         const namaJurusan = kotak.getAttribute("data-nama");
-        if (namaJurusan.includes(kataKunci)) {
+        if (namaJurusan.indexOf(kataKunci) !== -1) {
             kotak.style.display = "flex";
         } else {
             kotak.style.display = "none";
@@ -101,7 +101,7 @@ function cekMapel() {
         <div style="margin-top: 0.85rem;">
             <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #be123c;">Prioritas Utama (Mapel Pendukung SNBP):</span>
             <ul style="margin-left: 1.25rem; margin-top: 0.35rem; font-size: 0.9rem; font-weight: 700;">
-                ${data.wajib.map(m => `<li>${m}</li>`).join('')}
+                ${data.wajib.map(function(m) { return `<li>${m}</li>`; }).join('')}
             </ul>
         </div>
         <div style="margin-top: 0.85rem;">
@@ -116,10 +116,12 @@ function cekMapel() {
 
 function ambilNilaiInput() {
     const ids = ['sem1', 'sem2', 'sem3', 'sem4', 'sem5'];
-    return ids.map(id => {
+    return ids.map(function(id) {
         const el = document.getElementById(id);
         let angka = parseFloat(el.value);
-        if (isNaN(angka)) angka = 0;
+        if (isNaN(angka)) {
+            angka = 0;
+        }
         if (angka > 100) {
             angka = 100;
             el.value = 100;
@@ -134,7 +136,9 @@ function ambilNilaiInput() {
 
 function gambarGrafikSVG(nilai) {
     const wadah = document.getElementById('wadahGrafik');
-    if (!wadah) return;
+    if (!wadah) {
+        return;
+    }
 
     const lebar = 440;
     const tinggi = 260;
@@ -146,19 +150,25 @@ function gambarGrafikSVG(nilai) {
     const areaLebar = lebar - padKiri - padKanan;
     const areaTinggi = tinggi - padAtas - padBawah;
 
-    const minNilai = Math.min(...nilai, 70);
+    const daftarMin = nilai.concat([70]);
+    const minNilai = Math.min.apply(null, daftarMin);
     const batasBawah = Math.max(0, Math.floor((minNilai - 5) / 5) * 5);
     const batasAtas = 100;
-    const rentang = batasAtas - batasBawah || 1;
+    const rentang = (batasAtas - batasBawah) || 1;
 
-    const titik = nilai.map((val, idx) => {
+    const titik = nilai.map(function(val, idx) {
         const x = padKiri + (idx * (areaLebar / (nilai.length - 1)));
         const y = padAtas + areaTinggi - (((val - batasBawah) / rentang) * areaTinggi);
-        return { x, y, val };
+        return { x: x, y: y, val: val };
     });
 
-    const jalurGaris = titik.map((t, i) => `${i === 0 ? 'M' : 'L'} ${t.x.toFixed(1)} ${t.y.toFixed(1)}`).join(' ');
-    const jalurArea = `${jalurGaris} L ${titik[titik.length - 1].x.toFixed(1)} ${padAtas + areaTinggi} L ${titik[0].x.toFixed(1)} ${padAtas + areaTinggi} Z`;
+    const jalurGaris = titik.map(function(t, i) {
+        return (i === 0 ? 'M ' : 'L ') + t.x.toFixed(1) + ' ' + t.y.toFixed(1);
+    }).join(' ');
+
+    const titikAkhir = titik[titik.length - 1];
+    const titikAwal = titik[0];
+    const jalurArea = jalurGaris + ' L ' + titikAkhir.x.toFixed(1) + ' ' + (padAtas + areaTinggi) + ' L ' + titikAwal.x.toFixed(1) + ' ' + (padAtas + areaTinggi) + ' Z';
 
     let gridHorizontal = '';
     const langkah = 4;
@@ -172,12 +182,14 @@ function gambarGrafikSVG(nilai) {
     }
 
     const labelSemester = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'];
-    const elemenTitik = titik.map((t, i) => `
-        <text x="${t.x}" y="${tinggi - 12}" text-anchor="middle" font-size="11" font-weight="800" fill="#18181b">${labelSemester[i]}</text>
-        <circle cx="${t.x}" cy="${t.y}" r="6" fill="#2563eb" stroke="#18181b" stroke-width="2.5" />
-        <rect x="${t.x - 18}" y="${t.y - 26}" width="36" height="18" rx="4" fill="#18181b" />
-        <text x="${t.x}" y="${t.y - 14}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">${t.val}</text>
-    `).join('');
+    const elemenTitik = titik.map(function(t, i) {
+        return `
+            <text x="${t.x}" y="${tinggi - 12}" text-anchor="middle" font-size="11" font-weight="800" fill="#18181b">${labelSemester[i]}</text>
+            <circle cx="${t.x}" cy="${t.y}" r="6" fill="#2563eb" stroke="#18181b" stroke-width="2.5" />
+            <rect x="${t.x - 18}" y="${t.y - 26}" width="36" height="18" rx="4" fill="#18181b" />
+            <text x="${t.x}" y="${t.y - 14}" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">${t.val}</text>
+        `;
+    }).join('');
 
     wadah.innerHTML = `
         <div style="font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.5rem; color: var(--ink-primary);">
@@ -195,9 +207,12 @@ function gambarGrafikSVG(nilai) {
 }
 
 function tampilkanStatusAnalisis(nilai) {
-    const rataRata = (nilai.reduce((a, b) => a + b, 0) / nilai.length).toFixed(2);
+    const total = nilai.reduce(function(a, b) { return a + b; }, 0);
+    const rataRata = (total / nilai.length).toFixed(2);
     const statusEl = document.getElementById('statusTren');
-    if (!statusEl) return;
+    if (!statusEl) {
+        return;
+    }
 
     let jumlahTurun = 0;
     for (let i = 1; i < nilai.length; i++) {
@@ -206,8 +221,3 @@ function tampilkanStatusAnalisis(nilai) {
         }
     }
 
-    const semAwal = nilai[0];
-    const semAkhir = nilai[nilai.length - 1];
-
-    if (jumlahTurun === 0 && semAkhir > semAwal) {
-        statusEl.className = "status-banner status-good";
