@@ -73,46 +73,6 @@ const dataJurusan = {
     }
 };
 
-const daftarIdeP5 = [
-    {
-        tema: "Gaya Hidup Berkelanjutan",
-        judul: "Audit Sampah Kantin Digital",
-        deskripsi: "Menghitung volume sampah plastik kantin selama 1 minggu dan membuat kampanye infografis serta sistem poin tukar botol bekas."
-    },
-    {
-        tema: "Kewirausahaan",
-        judul: "Jasa Desain & Fotografi Event",
-        deskripsi: "Membentuk agensi kreatif mini antarsiswa untuk menyediakan jasa pembuatan poster, feed media sosial, dan dokumentasi acara sekolah."
-    },
-    {
-        tema: "Rekayasa & Teknologi",
-        judul: "Web Pengingat Jadwal & Piket",
-        deskripsi: "Membuat halaman web sederhana berbasis GitHub Pages khusus kelas untuk melacak jadwal piket, tugas harian, dan kas kelas transparan."
-    }
-];
-
-function muatKartuP5() {
-    const wadah = document.getElementById("wadahP5");
-    if (!wadah) return;
-    wadah.innerHTML = "";
-    for (let i = 0; i < daftarIdeP5.length; i++) {
-        const item = daftarIdeP5[i];
-        const kartu = document.createElement("div");
-        kartu.className = "idea-card";
-        const tag = document.createElement("span");
-        tag.className = "idea-tag";
-        tag.textContent = item.tema;
-        const judul = document.createElement("h3");
-        judul.textContent = item.judul;
-        const teks = document.createElement("p");
-        teks.textContent = item.deskripsi;
-        kartu.appendChild(tag);
-        kartu.appendChild(judul);
-        kartu.appendChild(teks);
-        wadah.appendChild(kartu);
-    }
-}
-
 function filterJurusan() {
     const kataKunci = document.getElementById("cariJurusan").value.toLowerCase();
     const semuaKotak = document.querySelectorAll("#daftarJurusanGrid .option-box");
@@ -214,11 +174,11 @@ function updateGrafik() {
 
     let minVal = 100;
     let adaPositif = false;
-    const daftar = [v1, v2, v3, v4, v5];
+    const daftar = new Array(v1, v2, v3, v4, v5);
     for (let i = 0; i < 5; i++) {
-        if (daftar[i] > 0) {
+        if (daftar.at(i) > 0) {
             adaPositif = true;
-            if (daftar[i] < minVal) minVal = daftar[i];
+            if (daftar.at(i) < minVal) minVal = daftar.at(i);
         }
     }
     if (!adaPositif) minVal = 65;
@@ -280,6 +240,5 @@ function updateGrafik() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    muatKartuP5();
     updateGrafik();
 });
