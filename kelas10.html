@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jalur Merdeka - Rekomendasi Peminatan Kelas 10</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div class="brand-title">Jalur Merdeka</div>
+            <div class="nav-links">
+                <a href="index.html">Strategi Kuliah</a>
+                <a href="kelas10.html">Peminatan Kelas 10</a>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <div class="header-inner">
+            <span class="badge-tag">Khusus Siswa Kelas 10 SMA</span>
+            <h1>Rekomendasi Paket Mata Pelajaran Kelas 11</h1>
+            <p>Bingung menentukan paket peminatan di akhir kelas 10? Pilih bidang minatmu dan masukkan nilai rapor kelas 10 untuk melihat rekomendasi paket mapel terbaik.</p>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="card-section">
+            <h2>1. Rekomendasi Paket Peminatan Berdasarkan Minat</h2>
+            <p class="section-desc">Klik salah satu bidang minat utama yang paling sesuai dengan gaya belajarmu.</p>
+
+            <div class="grid-2">
+                <div>
+                    <label class="field-label">Pilih Bidang Minat Utama:</label>
+                    <div class="option-grid">
+                        <label class="option-box">
+                            <input type="radio" name="minatRadio" value="kesehatan" onchange="cekMinatKelas10()">
+                            <span>Kesehatan & Medis</span>
+                        </label>
+                        <label class="option-box">
+                            <input type="radio" name="minatRadio" value="teknik" onchange="cekMinatKelas10()">
+                            <span>Teknik & Komputer</span>
+                        </label>
+                        <label class="option-box">
+                            <input type="radio" name="minatRadio" value="bisnis" onchange="cekMinatKelas10()">
+                            <span>Ekonomi & Bisnis</span>
+                        </label>
+                        <label class="option-box">
+                            <input type="radio" name="minatRadio" value="sosial" onchange="cekMinatKelas10()">
+                            <span>Hukum & Sosial</span>
+                        </label>
+                        <label class="option-box">
+                            <input type="radio" name="minatRadio" value="bahasa" onchange="cekMinatKelas10()">
+                            <span>Bahasa & Global</span>
+                        </label>
+                        <label class="option-box">
+                            <input type="radio" name="minatRadio" value="kreatif" onchange="cekMinatKelas10()">
+                            <span>Seni & Desain</span>
+                        </label>
+                    </div>
+
+                    <div class="note-box">
+                        Tips Kelas 10: Sesuaikan pilihan paket mapel dengan nilai mata pelajaran yang paling menonjol di Semester 1 dan 2 agar nilai rapormu terus meningkat di kelas 11.
+                    </div>
+                </div>
+
+                <div id="hasilMinat10" class="result-panel">
+                    <p class="placeholder-text">Silakan klik salah satu kotak bidang minat di samping untuk melihat rekomendasi paket mapel pilihan kelas 11.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card-section">
+            <h2>2. Grafik & Analisis Nilai Rapor Kelas 10</h2>
+            <p class="section-desc">Masukkan nilai rata-rata mata pelajaran utama di Semester 1 dan Semester 2 kelas 10 untuk mengecek kesiapan peminatanmu.</p>
+
+            <div class="grid-2 align-center">
+                <div class="input-stack">
+                    <div class="grid-2 compact-grid">
+                        <div>
+                            <label class="field-label" for="nMtk">Matematika</label>
+                            <input type="number" id="nMtk" value="85" min="0" max="100" step="0.01" oninput="updateGrafik10()">
+                        </div>
+                        <div>
+                            <label class="field-label" for="nIpa">IPA (Fisika/Kimia/Bio)</label>
+                            <input type="number" id="nIpa" value="88" min="0" max="100" step="0.01" oninput="updateGrafik10()">
+                        </div>
+                        <div>
+                            <label class="field-label" for="nIps">IPS (Eko/Sosio/Geo)</label>
+                            <input type="number" id="nIps" value="82" min="0" max="100" step="0.01" oninput="updateGrafik10()">
+                        </div>
+                        <div>
+                            <label class="field-label" for="nBhs">Bahasa Indonesia & Inggris</label>
+                            <input type="number" id="nBhs" value="86" min="0" max="100" step="0.01" oninput="updateGrafik10()">
+                        </div>
+                    </div>
+                    <button type="button" onclick="updateGrafik10()" class="btn-solid">
+                        Cek Kecocokan Nilai
+                    </button>
+                    <div id="statusNilai10" class="status-banner status-good"></div>
+                </div>
+
+                <div class="result-panel chart-box">
+                    <div class="chart-heading">Grafik Kekuatan Nilai Rapor Kelas 10</div>
+                    <div class="bar-chart-area">
+                        <div class="bar-col">
+                            <span id="lblK1" class="bar-val">85</span>
+                            <div id="barK1" class="bar-fill"></div>
+                            <span class="bar-name">MTK</span>
+                        </div>
+                        <div class="bar-col">
+                            <span id="lblK2" class="bar-val">88</span>
+                            <div id="barK2" class="bar-fill"></div>
+                            <span class="bar-name">IPA</span>
+                        </div>
+                        <div class="bar-col">
+                            <span id="lblK3" class="bar-val">82</span>
+                            <div id="barK3" class="bar-fill"></div>
+                            <span class="bar-name">IPS</span>
+                        </div>
+                        <div class="bar-col">
+                            <span id="lblK4" class="bar-val">86</span>
+                            <div id="barK4" class="bar-fill"></div>
+                            <span class="bar-name">Bahasa</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Dibuat untuk membantu siswa SMA merencanakan masa depan pendidikan. Siap di-hosting di GitHub Pages.</p>
+    </footer>
+
+    <script src="kelas10.js"></script>
+</body>
+</html>
