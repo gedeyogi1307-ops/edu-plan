@@ -1,3 +1,4 @@
+
 # Logbook Pemanfaatan Kecerdasan Artifisial (AI_LOGBOOK.md)
 
 **Nama Proyek:** Jalur Merdeka - Simulator Mapel & Strategi SNBP  
@@ -36,6 +37,9 @@
   * Peringatan **"Data Belum Lengkap"** jika ada nilai `0`.  
   * Kategori **"Tren Konsisten Stabil"** jika seluruh semester bernilai sama.  
   * Kategori **"Rata-Rata Sangat Tinggi"** jika rata-rata mencapai `>= 90` meskipun terjadi penurunan di satu semester.
+<img width="1917" height="1078" alt="Screenshot 2026-11-16 213219" src="https://github.com/user-attachments/assets/d67551bc-72c6-44e0-86d3-0bdf5e258de9" />![Uploading Screenshot 2026-11-16 223812.png…]()
+<img width="1916" height="1078" alt="Screenshot 2026-11-16 223822" src="https://github.com/user-attachments/assets/13c9834e-22ac-41e0-b252-d7af8b86d7e5" />
+<img width="1426" height="945" alt="Screenshot 2026-11-16 224302" src="https://github.com/user-attachments/assets/44677561-fea8-4ed3-a036-23cd6e8beb89" />
 
 ---
 
