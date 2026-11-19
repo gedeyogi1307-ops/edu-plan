@@ -2,7 +2,7 @@
 
 **Jalur Merdeka** merupakan aplikasi berbasis web interaktif untuk membantu pelajar SMA yang menerapkan Kurikulum Merdeka dalam merencanakan paket mata pelajaran pilihan kelas 11 serta memetakan strategi kelulusan jalur SNBP (Seleksi Nasional Berdasarkan Prestasi). Proyek ini dikembangkan untuk menjawab kebingungan siswa kelas 10 saat menentukan paket peminatan SMA, sekaligus membantu siswa kelas 11 dan 12 memantau kesesuaian mata pelajaran yang diambil dengan syarat program studi kuliah serta kestabilan grafik nilai rapor dari semester 1 hingga 5 secara mandiri.
 
-Akses langsung website melalui tautan **[Jalur Merdeka](https://github.io)**.
+Akses langsung website melalui tautan **https://gedeyogi1307-ops.github.io/edu-plan/**
 
 
 **— Teknologi yang Digunakan**
