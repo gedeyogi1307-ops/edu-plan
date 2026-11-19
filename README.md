@@ -1,49 +1,33 @@
-# EduPLAN
-untuk planning pendidikan masa depan
-# Jalur Merdeka - Simulator Mapel Pilihan & Strategi SNBP
+# Jalur Merdeka
 
-## 1. Judul & Deskripsi
-**Jalur Merdeka** adalah aplikasi web interaktif yang dirancang khusus untuk membantu siswa SMA yang menerapkan **Kurikulum Merdeka** dalam merencanakan pemilihan mata pelajaran (mapel) pilihan di kelas 11 serta memetakan strategi kelulusan jalur **SNBP (Seleksi Nasional Berdasarkan Prestasi)**.
+**Jalur Merdeka** merupakan aplikasi berbasis web interaktif untuk membantu pelajar SMA yang menerapkan Kurikulum Merdeka dalam merencanakan paket mata pelajaran pilihan kelas 11 serta memetakan strategi kelulusan jalur SNBP (Seleksi Nasional Berdasarkan Prestasi). Proyek ini dikembangkan untuk menjawab kebingungan siswa kelas 10 saat menentukan paket peminatan SMA, sekaligus membantu siswa kelas 11 dan 12 memantau kesesuaian mata pelajaran yang diambil dengan syarat program studi kuliah serta kestabilan grafik nilai rapor dari semester 1 hingga 5 secara mandiri.
 
-* **Latar Belakang Masalah:** Banyak siswa kelas 10 mengalami kebingungan saat menentukan paket mata pelajaran pilihan untuk kelas 11, sementara siswa kelas 11 dan 12 sering kali kurang memantau kesesuaian mapel yang diambil dengan syarat program studi kuliah serta kestabilan grafik nilai rapor mereka.
-* **Target Pengguna:** Siswa SMA kelas 10, kelas 11, dan kelas 12.
+Akses langsung website melalui tautan **[Jalur Merdeka](https://github.io)**.
 
----
 
-## 2. Teknologi yang Digunakan
-* **Bahasa Pemrograman:** HTML5, CSS3, dan Vanilla JavaScript (ES6+).
-* **Pustaka / Eksternal:** Tanpa pustaka pihak ketiga yang berat; grafik batang dibangun secara murni menggunakan manipulasi DOM JavaScript dan transisi CSS.
-* **Platform Publikasi:** GitHub Pages.
+**— Teknologi yang Digunakan**
+- **HTML & CSS** sebagai kerangka struktur multi-halaman (`index.html` dan `kelas10.html`) serta tata letak responsif dengan gaya desain warna solid kontras tinggi tanpa gradasi dan grid kartu otomatis.
+- **JavaScript** untuk logika interaktif pencarian jurusan secara *real-time*, pencocokan mata pelajaran pendukung SNBP, perhitungan otomatis tinggi batang grafik rapor, serta analisis tren nilai per semester.
+- **System UI Fonts** untuk memastikan tipografi antarmuka terbaca tajam, ringan, dan cepat dimuat di berbagai perangkat tanpa bergantung pada koneksi font eksternal.
+- **GitHub & GitHub Pages** sebagai repositori kode sumber dan layanan publikasi (*hosting*) situs web.
 
----
 
-## 3. Pemanfaatan AI (AI Usage Disclosure)
-* **Alat AI yang Digunakan:** Google Gemini.
-* **Contoh Perintah (Prompt) Utama yang Digunakan:**
-  * *"Buatkan rancangan situs web edukasi untuk siswa SMA Kurikulum Merdeka guna mencocokkan mata pelajaran pilihan dengan jurusan SNBP dan menghitung tren nilai rapor semester 1 sampai 5."*
-  * *"Buatkan halaman tambahan khusus siswa kelas 10 untuk merekomendasikan paket peminatan kelas 11 beserta grafik analisis nilai rapornya."*
-  * *"Perbaiki logika status analisis tren rapor agar mampu mendeteksi input kosong, nilai datar yang konsisten, serta rata-rata nilai tinggi."*
-* **Penyesuaian & Perbaikan Mandiri:**
-  * Menghapus bagian Bank Ide P5 dari struktur awal dan menggantinya dengan fitur halaman peminatan khusus kelas 10 (`kelas10.html`).
-  * Menyusun dan memvalidasi data 12 program studi kuliah beserta daftar mata pelajaran pendukung SNBP yang relevan.
-  * Menguji berbagai kombinasi input nilai rapor dan menyempurnakan logika kondisi status analisis pada `script.js` dan `kelas10.js`.
+**— Pemanfaatan AI (AI Usage Disclosure)**
+Dalam pengembangan proyek ini, kami memanfaatkan **Google Gemini** sebagai asisten pemrograman dan diskusi perancangan. Salah satu perintah (*prompt*) utama yang kami gunakan pada tahap penyusunan kode adalah sebagai berikut.
 
----
+> "Buatkan struktur file HTML, CSS, dan JS terpisah (index.html, kelas10.html, style.css, script.js, kelas10.js) untuk Jalur Merdeka. Gunakan palet warna solid kontras tinggi dengan bayangan tegas tanpa gradasi, larang penggunaan emoji, buat grafik perkembangan nilai rapor tanpa pustaka eksternal yang berat, serta keluarkan kode bersih."
 
-## 4. Panduan Penggunaan
-* **Tautan Situs Web Aktif:** [Masukkan Tautan GitHub Pages Anda di Sini, misal: https://github.io]
-* **Cara Menggunakan Aplikasi:**
-  1. **Untuk Siswa Kelas 10 (Menu *Peminatan Kelas 10*):**
-     * Klik salah satu kotak **Bidang Minat Utama** untuk melihat rekomendasi 4 mata pelajaran pilihan kelas 11 beserta prospek jurusan kuliah yang linear.
-     * Masukkan nilai rata-rata kelompok mapel **MTK, IPA, IPS, dan Bahasa** pada Semester 1 & 2 kelas 10 untuk melihat grafik kekuatan nilai dan rekomendasi paket peminatan otomatis.
-  2. **Untuk Siswa Kelas 11 & 12 (Menu *Strategi Kuliah*):**
-     * Gunakan kolom pencarian atau klik salah satu dari **12 Program Studi Impian** untuk mengetahui mapel prioritas utama SNBP, mapel pelengkap, dan strategi nilai.
-     * Masukkan rata-rata nilai rapor **Semester 1 hingga Semester 5** pada kalkulator tren untuk memantau grafik perkembangan nilai dan status kelayakan tren SNBP.
+Terhadap saran dan keluaran kode dari AI, kemudian kami melakukan beberapa penyesuaian. Kami menghapus fitur Bank Ide P5 dari rancangan awal agar fokus aplikasi lebih tajam pada perencanaan akademik, memisahkan halaman khusus siswa kelas 10 (`kelas10.html`) dengan halaman strategi kuliah kelas 11–12 (`index.html`), menyusun ulang basis data 12 program studi beserta mapel pendukung SNBP sesuai Kurikulum Merdeka, serta menyempurnakan logika kondisi analisis grafik rapor agar mampu mendeteksi input kosong, nilai datar yang konsisten, maupun rata-rata nilai tinggi secara akurat. Catatan interaksi selengkapnya terdokumentasi pada berkas **AI_LOGBOOK.md**.
 
----
 
-## 5. Identitas Pengembang
-* **Anggota 1:** [Nama Lengkap Siswa 1] - Kelas [Contoh: XI-A] / Jurusan [Contoh: MIPA / Mapel Pilihan KKA]
-* **Anggota 2:** [Nama Lengkap Siswa 2] - Kelas [Contoh: XI-A] / Jurusan [Contoh: MIPA / Mapel Pilihan KKA]
-* **Asal Sekolah:** [Nama SMA Anda, Kabupaten/Kota]
-* **Kegiatan:** Pelatihan TIK Bagi Murid SMA/SMK Tahun 2026 (LATIKA) - UPT. TIKP Dinas Pendidikan Provinsi Jawa Timur
+**— Panduan Penggunaan**
+- **Rekomendasi Peminatan Kelas 10**: Buka menu **Peminatan Kelas 10**, lalu klik salah satu kotak **Bidang Minat Utama** (seperti Kesehatan, Teknik, atau Bisnis) untuk melihat rekomendasi 4 mata pelajaran pilihan kelas 11 beserta prospek jurusan kuliah yang linear.
+- **Analisis Nilai Rapor Kelas 10**: Pada bagian bawah halaman Kelas 10, masukkan nilai rata-rata kelompok mapel **MTK, IPA, IPS, dan Bahasa** pada Semester 1 & 2 untuk melihat grafik kekuatan nilai dan rekomendasi paket peminatan otomatis.
+- **Pencocok Mapel & Jurusan SNBP**: Buka menu **Strategi Kuliah**, gunakan kolom pencarian atau klik salah satu dari **12 Program Studi Impian** untuk mengetahui mapel prioritas utama SNBP, mapel pelengkap yang disarankan, serta strategi nilai rapor.
+- **Kalkulator Tren Nilai Rapor**: Masukkan rata-rata nilai rapor **Semester 1 hingga Semester 5** untuk memantau grafik batang perkembangan nilai secara *real-time* beserta status evaluasi kelayakan tren untuk SNBP.
+
+
+**— Identitas Pengembang**
+- **Anggota 1:** *I GEDE YOGI ARDINATHA UTAMA — Kelas X-5 — SMA NEGERI 1 MADIUN*
+- **Anggota 2:** *LOIS TIMOTEA SUGIARTO — Kelas X-7 — SMA NEGERI 1 MADIUN*
+- **Kegiatan:** *Pelatihan TIK bagi Murid (LATIKA) Tahun 2026 — Gelombang 4 Wilayah Kota Madiun*
